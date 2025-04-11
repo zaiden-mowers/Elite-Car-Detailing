@@ -31,6 +31,8 @@ body {
 .logo {
     width: 150px;
     height: auto;
+    display: block;
+    margin: 0 auto 10px;
 }
 
 .hero {
@@ -41,6 +43,7 @@ body {
 
 .hero h1 {
     color: #fff;
+    margin-top: 20px;
 }
 
 .hero p {
@@ -78,4 +81,25 @@ footer {
     background-color: #c40000;
     text-align: center;
     padding: 15px;
+}
+
+.package {
+    display: none;
+}
+
+.package.active {
+    display: block;
+}
+
+#carImage {
+    max-width: 100%;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#statusMessage {
+    margin-top: 10px;
+    color: #0f0;
 }
