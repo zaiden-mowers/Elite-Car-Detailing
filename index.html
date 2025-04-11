@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Elite Car Detailing</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
   <header class="header">
@@ -16,14 +17,16 @@
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#social">Social Media</a></li>
+        <li><a href="#booking">Book Now</a></li>
       </ul>
     </nav>
   </header>
 
   <section class="hero">
-    <h1>Elite Car Detailing</h1>
+    <img id="carImage" src="images/clean-car.png" alt="Clean Car" class="slide-in" />
+    <h1 id="siteTitle" class="fade-in">Elite Car Detailing</h1>
     <p>Mobile detailing in Snowflake, AZ and surrounding areas.</p>
-    <a href="#contact" class="btn">Book Now</a>
+    <a href="#booking" class="btn">Book Now</a>
   </section>
 
   <section id="services">
@@ -38,8 +41,63 @@
   </section>
 
   <section id="pricing">
-    <h2>Pricing</h2>
-    <p>Contact us for a personalized quote! Packages available for all vehicle types.</p>
+    <h2>Pricing Packages</h2>
+    <div class="package-tabs">
+      <button onclick="showPackage('interior')">Interior</button>
+      <button onclick="showPackage('exterior')">Exterior</button>
+      <button onclick="showPackage('both')">Both</button>
+    </div>
+
+    <div id="interior" class="package">
+      <h3>Interior Packages</h3>
+      <ul>
+        <li><strong>Basic:</strong> $125 – Vacuum, wipe down, interior glass</li>
+        <li><strong>Complete:</strong> $175 – Includes basic + shampoo + jam clean</li>
+        <li><strong>Premium:</strong> $225 – Includes everything + steam clean + leather care</li>
+        <li>Add-ons: Pet hair removal, console detail, stain removal, etc.</li>
+      </ul>
+    </div>
+
+    <div id="exterior" class="package hidden">
+      <h3>Exterior Packages</h3>
+      <ul>
+        <li><strong>Basic:</strong> $50 – Wash, foam bath, wheels, dry</li>
+        <li>Add-ons: Wax ($75), Sealant ($50), Engine Bay ($75)</li>
+      </ul>
+    </div>
+
+    <div id="both" class="package hidden">
+      <h3>Interior + Exterior Packages</h3>
+      <ul>
+        <li><strong>Basic:</strong> $150</li>
+        <li><strong>Complete:</strong> $200</li>
+        <li><strong>Premium:</strong> $250</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="booking">
+    <h2>Book a Detail</h2>
+    <form id="bookingForm">
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="vehicle" placeholder="Vehicle" required />
+      <select name="service">
+        <option value="Interior">Interior</option>
+        <option value="Exterior">Exterior</option>
+        <option value="Both">Both</option>
+      </select>
+      <select name="tier">
+        <option value="Basic">Basic</option>
+        <option value="Complete">Complete</option>
+        <option value="Premium">Premium</option>
+      </select>
+      <input type="date" name="date" required />
+      <input type="time" name="time" required />
+      <textarea name="notes" placeholder="Any notes or questions?"></textarea>
+      <button type="submit">Submit Booking</button>
+    </form>
+    <p id="statusMessage"></p>
   </section>
 
   <section id="contact">
@@ -51,11 +109,47 @@
 
   <section id="social">
     <h2>Follow Us</h2>
-    <a href="https://www.instagram.com/az.elite.car.detailing?igsh=MWc1YWFoZ3loaDQ0eg%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+    <a href="https://www.instagram.com/az.elite.car.detailing" target="_blank">Instagram</a>
   </section>
 
   <footer>
     <p>&copy; 2025 Elite Car Detailing. All rights reserved.</p>
   </footer>
+
+  <script type="text/babel">
+    // Booking form
+    emailjs.init('EfRfatGZh5XjnIH8k');
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        vehicle: form.vehicle.value,
+        service: form.service.value,
+        tier: form.tier.value,
+        date: form.date.value,
+        time: form.time.value,
+        notes: form.notes.value
+      };
+      emailjs.send('service_8h9ln1a', 'template_mol05y5', formData)
+        .then(() => document.getElementById('statusMessage').textContent = 'Booking submitted!')
+        .catch(() => document.getElementById('statusMessage').textContent = 'Error sending booking.');
+    });
+
+    // Tab display
+    function showPackage(type) {
+      ['interior', 'exterior', 'both'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(type).classList.remove('hidden');
+    }
+
+    // Animation
+    window.onload = () => {
+      document.getElementById('carImage')?.classList.add('animate-slide');
+      document.getElementById('siteTitle')?.classList.add('animate-fade');
+    }
+  </script>
 </body>
 </html>
