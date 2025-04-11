@@ -6,7 +6,44 @@
   <title>Elite Car Detailing</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize EmailJS
+      emailjs.init('EfRfatGZh5XjnIH8k');
+
+      // Booking form logic
+      const form = document.getElementById('bookingForm');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const formData = {
+            name: form.name.value,
+            email: form.email.value,
+            vehicle: form.vehicle.value,
+            service: form.service.value,
+            tier: form.tier.value,
+            date: form.date.value,
+            time: form.time.value,
+            notes: form.notes.value
+          };
+          emailjs.send('service_8h9ln1a', 'template_mol05y5', formData)
+            .then(() => document.getElementById('statusMessage').textContent = 'Booking submitted!')
+            .catch(() => document.getElementById('statusMessage').textContent = 'Error sending booking.');
+        });
+      }
+
+      // Service tab logic
+      const buttons = document.querySelectorAll('[data-package]');
+      const packages = document.querySelectorAll('.package');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          packages.forEach(p => p.classList.remove('active'));
+          const target = document.getElementById(btn.dataset.package);
+          if (target) target.classList.add('active');
+        });
+      });
+    });
+  </script>
 </head>
 <body>
   <header class="header">
@@ -24,7 +61,7 @@
 
   <section class="hero">
     <img id="carImage" src="images/clean-car.png" alt="Clean Car" class="slide-in" />
-    <h1 id="siteTitle" class="fade-in">Elite Car Detailing</h1>
+    <h1 id="siteTitle">Elite Car Detailing</h1>
     <p>Mobile detailing in Snowflake, AZ and surrounding areas.</p>
     <a href="#booking" class="btn">Book Now</a>
   </section>
@@ -43,30 +80,27 @@
   <section id="pricing">
     <h2>Pricing Packages</h2>
     <div class="package-tabs">
-      <button onclick="showPackage('interior')">Interior</button>
-      <button onclick="showPackage('exterior')">Exterior</button>
-      <button onclick="showPackage('both')">Both</button>
+      <button class="btn" data-package="interior">Interior</button>
+      <button class="btn" data-package="exterior">Exterior</button>
+      <button class="btn" data-package="both">Both</button>
     </div>
-
-    <div id="interior" class="package">
+    <div id="interior" class="package active">
       <h3>Interior Packages</h3>
       <ul>
         <li><strong>Basic:</strong> $125 – Vacuum, wipe down, interior glass</li>
         <li><strong>Complete:</strong> $175 – Includes basic + shampoo + jam clean</li>
-        <li><strong>Premium:</strong> $225 – Includes everything + steam clean + leather care</li>
+        <li><strong>Premium:</strong> $225 – Everything + steam clean + leather care</li>
         <li>Add-ons: Pet hair removal, console detail, stain removal, etc.</li>
       </ul>
     </div>
-
-    <div id="exterior" class="package hidden">
+    <div id="exterior" class="package">
       <h3>Exterior Packages</h3>
       <ul>
         <li><strong>Basic:</strong> $50 – Wash, foam bath, wheels, dry</li>
         <li>Add-ons: Wax ($75), Sealant ($50), Engine Bay ($75)</li>
       </ul>
     </div>
-
-    <div id="both" class="package hidden">
+    <div id="both" class="package">
       <h3>Interior + Exterior Packages</h3>
       <ul>
         <li><strong>Basic:</strong> $150</li>
@@ -95,7 +129,7 @@
       <input type="date" name="date" required />
       <input type="time" name="time" required />
       <textarea name="notes" placeholder="Any notes or questions?"></textarea>
-      <button type="submit">Submit Booking</button>
+      <button type="submit" class="btn">Submit Booking</button>
     </form>
     <p id="statusMessage"></p>
   </section>
@@ -115,41 +149,5 @@
   <footer>
     <p>&copy; 2025 Elite Car Detailing. All rights reserved.</p>
   </footer>
-
-  <script type="text/babel">
-    // Booking form
-    emailjs.init('EfRfatGZh5XjnIH8k');
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = {
-        name: form.name.value,
-        email: form.email.value,
-        vehicle: form.vehicle.value,
-        service: form.service.value,
-        tier: form.tier.value,
-        date: form.date.value,
-        time: form.time.value,
-        notes: form.notes.value
-      };
-      emailjs.send('service_8h9ln1a', 'template_mol05y5', formData)
-        .then(() => document.getElementById('statusMessage').textContent = 'Booking submitted!')
-        .catch(() => document.getElementById('statusMessage').textContent = 'Error sending booking.');
-    });
-
-    // Tab display
-    function showPackage(type) {
-      ['interior', 'exterior', 'both'].forEach(id => {
-        document.getElementById(id).classList.add('hidden');
-      });
-      document.getElementById(type).classList.remove('hidden');
-    }
-
-    // Animation
-    window.onload = () => {
-      document.getElementById('carImage')?.classList.add('animate-slide');
-      document.getElementById('siteTitle')?.classList.add('animate-fade');
-    }
-  </script>
 </body>
 </html>
