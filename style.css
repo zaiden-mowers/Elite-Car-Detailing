@@ -15,11 +15,14 @@ body {
 .header nav ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .header nav ul li {
-    display: inline;
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 .header nav ul li a {
@@ -103,3 +106,18 @@ footer {
     margin-top: 10px;
     color: #0f0;
 }
+
+@media screen and (max-width: 600px) {
+  .header nav ul li {
+    display: block;
+    margin: 8px 0;
+  }
+
+  section#social a {
+    display: inline-block;
+    word-break: break-word;
+    padding: 5px 0;
+    text-align: center;
+  }
+}
+
